@@ -1,4 +1,11 @@
 defmodule Math do
+
+  @moduledoc """
+    use: 
+    c "math.exs", "."
+    
+    to store the bytecode in cur dir and use the docs here...
+  """
   def atoms(atom) do
     case atom do
       :+ -> "plus"
@@ -20,16 +27,16 @@ defmodule Math do
         is_tuple(rhs) ->
           "(#{lhs} #{atoms} (#{Math.tupleString(rhs, string)}))"
 
-        True ->
+        true ->
           "(#{lhs} #{atoms} #{rhs})"
       end
 
-    string =
+    _string =
       cond do
         is_tuple(rhs) && is_tuple(lhs) ->
           "(#{string} #{atoms} (#{Math.tupleString(rhs, string)}))"
 
-        True ->
+        true ->
           "#{string}"
       end
   end
@@ -44,7 +51,7 @@ defmodule Math do
             is_tuple(lhs) ->
               Math.tupleString(lhs)
 
-            True ->
+            true ->
               "#{lhs}"
           end
         )
@@ -55,7 +62,7 @@ defmodule Math do
             is_tuple(rhs) ->
               Math.tupleString(rhs)
 
-            True ->
+            true ->
               "#{rhs}"
           end
         )
@@ -67,12 +74,22 @@ defmodule Math do
       IO.puts("#{lhString} #{atoms} #{rhString} equals #{result}")
     end
   end
+  @doc """
+  split like this without parens
 
-  defmacro unsay({:plus, _, [lhs, rhs]}) do
-    IO.inspect({:plus, [lhs, rhs]})
+  iex(49)> Regex.split(~r{(?=plus|minus)}, "one plus two minus three plus four")
+    ["one ", "plus two ", "minus three ", "plus four"]
+  
+  or maybe:
 
-    quote do
-      unquote(lhs + rhs)
-    end
+  iex(51)> Regex.split(~r{(?=plus|minus)\w+}, "one plus two minus three plus four", include_captures: true)
+    ["one ", "plus", " two ", "minus", " three ", "plus", " four"]
+  """
+  defmacro unsay(str) do
+    IO.inspect(str)
+    
+    # quote do
+    #   unquote(lhs + rhs)
+    # end
   end
 end
